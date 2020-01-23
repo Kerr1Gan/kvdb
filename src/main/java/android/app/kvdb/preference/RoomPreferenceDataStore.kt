@@ -18,10 +18,10 @@
  *                                                                             *
  *******************************************************************************/
 
-package com.galaxylab.kvdb.preference
+package android.app.kvdb.preference
 
 import androidx.preference.PreferenceDataStore
-import com.galaxylab.kvdb.database.KeyValuePair
+import android.app.kvdb.database.KeyValuePair
 import java.util.HashSet
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")

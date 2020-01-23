@@ -18,7 +18,7 @@
  *                                                                             *
  *******************************************************************************/
 
-package com.galaxylab.kvdb.database.migration
+package android.app.kvdb.database.migration
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase

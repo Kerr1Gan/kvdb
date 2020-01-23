@@ -18,7 +18,7 @@
  *                                                                             *
  *******************************************************************************/
 
-package com.galaxylab.kvdb.preference
+package android.app.kvdb.preference
 
 import androidx.preference.PreferenceDataStore
 

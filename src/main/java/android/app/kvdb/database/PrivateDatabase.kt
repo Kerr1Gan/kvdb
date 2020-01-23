@@ -18,54 +18,30 @@
  *                                                                             *
  *******************************************************************************/
 
-package com.galaxylab.kvdb.database
+package android.app.kvdb.database
 
 import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.galaxylab.kvdb.database.migration.RecreateSchemaMigration
 
 @Database(entities = [KeyValuePair::class], version = 28)
 abstract class PrivateDatabase : RoomDatabase() {
     companion object {
         lateinit var ctx: Application
         private val instance by lazy {
-            Room.databaseBuilder(ctx, PrivateDatabase::class.java, "profile.db").apply {
-                addMigrations(
-                        Migration26,
-                        Migration27,
-                        Migration28
-                )
+            Room.databaseBuilder(ctx, PrivateDatabase::class.java, "kv.db").apply {
+                //addMigrations()
                 allowMainThreadQueries()
                 enableMultiInstanceInvalidation()
                 fallbackToDestructiveMigration()
-//                setQueryExecutor { GlobalScope.launch { it.run() } }
             }.build()
         }
 
-        val kvPairDao get() = instance.keyValuePairDao()
+        @JvmStatic
+        val kvPairDao
+            get() = instance.keyValuePairDao()
     }
 
     abstract fun keyValuePairDao(): KeyValuePair.Dao
-
-    object Migration26 : RecreateSchemaMigration(25, 26, "Profile",
-            "(`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `host` TEXT NOT NULL, `remotePort` INTEGER NOT NULL, `password` TEXT NOT NULL, `method` TEXT NOT NULL, `route` TEXT NOT NULL, `remoteDns` TEXT NOT NULL, `proxyApps` INTEGER NOT NULL, `bypass` INTEGER NOT NULL, `udpdns` INTEGER NOT NULL, `ipv6` INTEGER NOT NULL, `individual` TEXT NOT NULL, `tx` INTEGER NOT NULL, `rx` INTEGER NOT NULL, `userOrder` INTEGER NOT NULL, `plugin` TEXT)",
-            "`id`, `name`, `host`, `remotePort`, `password`, `method`, `route`, `remoteDns`, `proxyApps`, `bypass`, `udpdns`, `ipv6`, `individual`, `tx`, `rx`, `userOrder`, `plugin`") {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            super.migrate(database)
-        }
-    }
-
-    object Migration27 : Migration(26, 27) {
-        override fun migrate(database: SupportSQLiteDatabase) =
-                database.execSQL("ALTER TABLE `Profile` ADD COLUMN `udpFallback` INTEGER")
-    }
-
-    object Migration28 : Migration(27, 28) {
-        override fun migrate(database: SupportSQLiteDatabase) =
-                database.execSQL("ALTER TABLE `Profile` ADD COLUMN `metered` INTEGER NOT NULL DEFAULT 0")
-    }
 }

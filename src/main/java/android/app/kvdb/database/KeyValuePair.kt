@@ -18,7 +18,7 @@
  *                                                                             *
  *******************************************************************************/
 
-package com.galaxylab.kvdb.database
+package android.app.kvdb.database
 
 import androidx.room.*
 import java.io.ByteArrayOutputStream
